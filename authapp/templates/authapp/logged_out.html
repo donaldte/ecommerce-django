@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Logged out{% endblock %}
+{% block title %}Déconnecté{% endblock %}
 {% block content %}
-<h1>Logged out</h1>
+<h1>Déconnecté</h1>
 <p>
-    You have been successfully logged out.
+    Vous avez été déconnecté avec succès.
     <hr>
-    You can <a href="{% url 'authapp:login' %}">log-in again</a>.
+    You can <a href="{% url 'authapp:login' %}">Reconnectez-vous</a>.
 </p>
 {% endblock %}

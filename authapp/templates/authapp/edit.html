@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
-{% block title %}Edit{% endblock title %}
+{% block title %}Editer{% endblock title %}
 {% block content %}
-<h2>Edit your account</h2>
-<p>You can edit your account using the follow form</p>
+<h2>Modifier votre compte</h2>
+<p>Vous pouvez modifier votre compte en utilisant le formulaire suivant</p>
 <form action="" method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Envoyez</button>
     {% endbuttons %}
 </form>
 {% endblock content %}

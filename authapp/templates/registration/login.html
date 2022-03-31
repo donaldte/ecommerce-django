@@ -5,24 +5,24 @@
 {% block content %}
 <div class="">
     <div style="text-align: center;">
-        <h1>Log-in</h1>
+        <h1>Connexion</h1>
         {% if form.errors %}
         <p>
-            Your username and password didn't match.Please
-            Please try again.
+            Votre nom d'utilisateur et votre mot de passe ne correspondent pas.Veuillez
+            Veuillez réessayer.
         </p>
         {% else %}
-        <p>Please, use the following form to log-in</p>
+        <p>Veuillez utiliser le formulaire suivant pour vous connecter</p>
         {% endif %}
     </div>
 
     <form action="" method="post" class="form ">
-        <p><a href="{% url 'authapp:password_reset' %}">Forgotten your password?</a></p>
+        <p><a href="{% url 'authapp:password_reset' %}">Mot de passe oublié?</a></p>
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
         <input type="hidden" name="next" value="{{ next }}" />
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Envoyez</button>
         {% endbuttons %}
     </form>
 </div>

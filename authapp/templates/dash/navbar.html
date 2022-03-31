@@ -1,15 +1,18 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
 <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Ecommerce</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  {% if user.is_authenticated %}
+  <a class="navbar-brand" href="#">Ecommerce</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">
+        <a class="nav-link" href="#">
           <i class="fa fa-home"></i>
           Acceuil
           <span class="sr-only">(current)</span>
@@ -20,15 +23,15 @@
           <i class="fa fa-envelope-o">
             <span class="badge badge-danger">11</span>
           </i>
-          Ajouter un produits
+          Ajouter
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link disabled" href="#">
           <i class="fa fa-envelope-o">
             <span class="badge badge-warning">11</span>
           </i>
-          liste Produits
+          Produict
         </a>
       </li>
       <li class="nav-item dropdown">
@@ -36,7 +39,7 @@
           <i class="fa fa-envelope-o">
             <span class="badge badge-primary">11</span>
           </i>
-          Actiions
+          Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">Action</a>
@@ -52,7 +55,7 @@
           <i class="fa fa-bell">
             <span class="badge badge-info">11</span>
           </i>
-          Commandes
+          Commandes valide
         </a>
       </li>
       <li class="nav-item">
@@ -60,16 +63,15 @@
           <i class="fa fa-globe">
             <span class="badge badge-success">11</span>
           </i>
-          Commandes valides
+          Commandes
         </a>
       </li>
     </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recherche</button>
+    </form>
+
 
   </div>
-
-  {% else %}
-  <marquee class="text-white"><h3> Vendre partout tout en etant a la maison</h3> </marquee>
-
-  {% endif %}
-  </nav>
-  
+</nav>

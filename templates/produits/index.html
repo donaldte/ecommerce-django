@@ -45,8 +45,13 @@
                      <a href="fashion.html">Fashion</a>
                      <a href="electronic.html">Electronic</a>
                      <a href="jewellery.html">Jewellery</a>
+                     
+                     {% if user.is_authenticated %}
+                     <a href="/authdashboard/"> Votre Pannel<a/>
+                     {% else %}
                      <a  href="{% url 'authapp:register' %}">Deviens vendeur</a>
-                     <a  href="{% url 'authapp:login' %}">Se connecter</a>
+                     <a  href="{% url 'authapp:login' %}">Se connecter</a>   
+                     {% endif %}
                     
                   </div>
                   <span class="toggle_icon" onclick="openNav()"><img src="{% static 'ecom/images/toggle-icon.png' %}"></span>
@@ -89,8 +94,13 @@
                               <div class="dropdown">
                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Deviens Vendeur </button>
                                  <div class="dropdown-menu login_menu_compte" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{% url 'authapp:register' %}">Creer un compte</a>
-                                    <a class="dropdown-item" href="{% url 'authapp:login' %}">Se connecter </a>
+                                   
+                                    {% if user.is_authenticated %}
+                                    <a class="dropdown-item" href="/authdashboard/"> Votre Pannel<a/>
+                                     {% else %}
+                                     <a class="dropdown-item" href="{% url 'authapp:register' %}">Creer un compte</a>
+                                     <a class="dropdown-item" href="{% url 'authapp:login' %}">Se connecter </a>  
+                                    {% endif %}
                                  </div>
                               </div>
                            </li>
