@@ -1,0 +1,43 @@
+{% extends 'statistique/base.html' %}
+
+{% block content %}
+
+<body class="bg-primary">
+
+    <div class="unix-login">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="login-content">
+                        <div class="login-logo">
+                            <a href="/statistique"><span>Dashboard</span></a>
+                        </div>
+                        <div class="login-form">
+                            <h4>Zone dangereuse.....Modification</h4>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                <div class="form-group">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-warning btn-flat m-b-30 m-t-30">Modifier</button>
+                                <a href="/profile" class="btn btn-secondary btn-flat m-b-30 m-t-30">Annuler</button>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+{% endblock content %}
+
+
+
+
+
+

@@ -1,0 +1,51 @@
+{% extends 'seller/bases.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3" style="color: red">
+            <p style="color: blue"></p>
+        </div>
+
+
+
+        <div class="col-sm-6" style="padding-top: 87px">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table text-primary"></i>
+                    Ajouter un nouveau produits rassurez vous que l'image du produit est de bonne qualite
+                </div>
+                <div class="card-body">
+                    <div class="form">
+                        {% if form.errors %}
+                        {{ form.errors }}
+                        {% endif %}
+                    </div>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group input-group">
+                            
+                                {{ form.as_p }}
+                            
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" href="">Ajouter maintenant</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+{% endblock %}

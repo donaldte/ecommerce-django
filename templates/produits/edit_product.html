@@ -1,0 +1,44 @@
+{% extends 'seller/bases.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="col-12 mb-3">
+                <div id="content-wrapper">
+                    <div class="container-fluid">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="">Produit : {{ object.mame }} </a>
+                        </ol>
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-table text-warning"></i>
+                                Detail du produit
+                            </div>
+                            <div class="card-body">
+                                
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {% for field in form %}
+                                            <div class="form-group">
+                                                {{ field.label_tag }}
+                                                {{ field }}
+                                            </div>
+                                            {% endfor %}
+                                            <input type="submit" value="Update" class="btn btn-success" />
+                                            <a href="/list"><button type="button"
+                                                    class="btn btn-secondary">Annuler</button></a>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}

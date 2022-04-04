@@ -46,8 +46,8 @@
                      <a href="electronic.html">Electronic</a>
                      <a href="jewellery.html">Jewellery</a>
                      
-                     {% if user.is_authenticated %}
-                     <a href="/authdashboard/"> Votre Pannel<a/>
+                     {% if user.is_authenticated and user.peut_vendre %}
+                     <a href="{% url 'authapp:dashboard' %}"> Votre Pannel<a/>
                      {% else %}
                      <a  href="{% url 'authapp:register' %}">Deviens vendeur</a>
                      <a  href="{% url 'authapp:login' %}">Se connecter</a>   
@@ -95,7 +95,7 @@
                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Deviens Vendeur </button>
                                  <div class="dropdown-menu login_menu_compte" aria-labelledby="dropdownMenuButton">
                                    
-                                    {% if user.is_authenticated %}
+                                    {% if user.is_authenticated and user.peut_vendre %}
                                     <a class="dropdown-item" href="/authdashboard/"> Votre Pannel<a/>
                                      {% else %}
                                      <a class="dropdown-item" href="{% url 'authapp:register' %}">Creer un compte</a>

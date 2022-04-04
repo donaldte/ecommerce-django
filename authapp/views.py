@@ -1,17 +1,20 @@
 from django.http import request
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistration, UserEditForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 # Create your views here.
 
-@login_required
+@login_required(login_url='/login')
 def dashboard(request):
     context = {
         "welcome": "Welcome to your dashboard"
     }
-    return render(request, 'authapp/dashboard.html', context=context)
+    return render(request, 'seller/index.html', context=context)
 
 
 def register(request):
@@ -29,8 +32,29 @@ def register(request):
 
     return render(request, 'authapp/register.html', context=context)
 
+def signIn(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        print(username, password)
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            if user.peut_vendre:
+                if 'next' in request.POST:
+                    return redirect(request.POST.get('next'))    
+                return render(request, 'seller/index.html')
+            else:
+                return render(request, 'authapp/peux_pas_vendre.html')   
+        
+    return render(request, 'registration/log.html')
 
 @login_required
+def logoutuser(request):
+    logout(request)
+    return redirect('/auth')    
+
+@login_required(login_url='/login')
 def edit(request):
     if request.method == 'POST':
         user_form = UserEditForm(instance=request.user,

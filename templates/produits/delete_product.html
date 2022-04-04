@@ -1,0 +1,46 @@
+{% extends 'seller/bases.html' %}
+ {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <div class="col-12 mb-3">
+        <div id="content-wrapper">
+          <div class="container-fluid">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="">Produit : {{ object.name }} </a>
+              </li>
+            </ol>
+
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fas fa-table text-warning"></i>
+                Details du produit
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12">
+                    <form method="post">
+                      {% csrf_token %}
+                      <div class="alert alert-warning" role="alert">
+                        Es tu sure de vouloir supprimmer le produit {{ object }}
+                        ?
+                      </div>
+                      <input
+                        type="submit"
+                        class="btn btn-danger"
+                        value="Oui supprimer"
+                      />
+                      <a class="btn btn-success" href="/list">Annuler</a>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>

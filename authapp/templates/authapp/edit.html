@@ -1,14 +1,39 @@
-{% extends "base.html" %}
-{% load bootstrap4 %}
-{% block title %}Editer{% endblock title %}
-{% block content %}
-<h2>Modifier votre compte</h2>
-<p>Vous pouvez modifier votre compte en utilisant le formulaire suivant</p>
-<form action="" method="post" class="form">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-    <button type="submit" class="btn btn-primary">Envoyez</button>
-    {% endbuttons %}
-</form>
+{% extends "base.html" %} {% load bootstrap4 %} {% block title %}Edit {%endblock title %}
+ {% block content %} 
+ {% if form.errors %} 
+ {% endif %}
+<body class="bg-gradient-primary form">
+  <div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="p-5">
+              
+              <div style="text-align: center">
+                <h1>Modification</h1>
+                <p>
+                  veillez modifier vos informations.
+                </p>
+              </div>
+
+              <form action="" method="post" class="form containe user">
+                {% csrf_token %}
+                 {% bootstrap_form form %} 
+                <button
+                  type="submit"
+                  class="btn btn-warning btn-user btn-block"
+                >
+                  Modifier
+                </button>
+                <hr />
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 {% endblock content %}

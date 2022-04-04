@@ -4,72 +4,22 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  {% if user.is_authenticated %}
-
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/">
-          <i class="fa fa-home"></i>
-          Acceuil
+          Accueil
           <span class="sr-only">(current)</span>
           </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa fa-envelope-o">
-            <span class="badge badge-danger">11</span>
-          </i>
-          Ajouter un produits
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa fa-envelope-o">
-            <span class="badge badge-warning">11</span>
-          </i>
-          liste Produits
-        </a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-envelope-o">
-            <span class="badge badge-primary">11</span>
-          </i>
-          Actiions
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-    </ul>
-    <ul class="navbar-nav ">
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa fa-bell">
-            <span class="badge badge-info">11</span>
-          </i>
-          Commandes
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fa fa-globe">
-            <span class="badge badge-success">11</span>
-          </i>
-          Commandes valides
-        </a>
-      </li>
+     {% if request.user.peut_vendre %}
+     <li>
+      <a class="nav-link" href="/authdashboard/"> Dashboard </a>
+    </li>
+     {% endif %}
     </ul>
 
   </div>
-
-  {% else %}
   <marquee class="text-white"><h3> Vendre partout tout en etant a la maison</h3> </marquee>
-
-  {% endif %}
   </nav>
   
