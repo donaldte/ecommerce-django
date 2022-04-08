@@ -57,7 +57,10 @@ def confimation(request):
 #statistique des achats
 @staff_member_required
 def statistique(request):
-    return render(request, 'statistique/index.html')
+    command = Commande.objects.all()
+    valide = Commande.objects.filter(regler=True).count()
+    count = Commande.objects.all().count()
+    return render(request, 'statistique/index.html', {'commande':command, 'valid': valide, 'count':count})
 
 @staff_member_required
 def product_sellers_list(request):
@@ -68,7 +71,8 @@ def product_sellers_list(request):
 @staff_member_required
 def profile(request):
     userprofiles = UserRegistrationModel.objects.all()
-    return render(request, 'statistique/app-profile.html', {'userprofiles':userprofiles})    
+    return render(request, 'statistique/app-profile.html', {'userprofiles':userprofiles})
+
 
 class UserEditView(LoginRequiredMixin,UpdateView):
 	model = UserRegistrationModel

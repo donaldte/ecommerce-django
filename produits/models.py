@@ -1,3 +1,4 @@
+from pyexpat import model
 from unicodedata import category
 from django.db import models
 from django.urls import reverse
@@ -46,6 +47,9 @@ class Commande(models.Model):
     pays = models.CharField(max_length=300)
     telephone = models.CharField(max_length=300)
     date_commande = models.DateTimeField(auto_now=True)
+    attente = models.BooleanField(_('En attente'), default=True)
+    annuler = models.BooleanField(_('Annuler'), default=False)
+    regler = models.BooleanField(_('Regler'), default=False)
 
     class Meta:
         ordering = ['-date_commande']
