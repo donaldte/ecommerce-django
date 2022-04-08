@@ -19,7 +19,7 @@ class Produit(models.Model):
     name = models.CharField(_("Nom du produit"), max_length=50)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products', null=True, blank=True)
-    description = models.CharField(_("Description du produit"), max_length=50)
+    description = models.TextField(_("Description du produit"))
     prix = models.PositiveIntegerField(_("Prix du produit"))
     date_added = models.DateTimeField(auto_now_add=True)
 
@@ -35,7 +35,20 @@ class Produit(models.Model):
         return reverse("produits:produit_detail", kwargs={"pk": self.pk})
 
 
+class Commande(models.Model):
+    vendeur = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    items = models.CharField(max_length=300)
+    prix = models.CharField(max_length=200)
+    nom = models.CharField(max_length=150)
+    email = models.EmailField()
+    address = models.CharField(max_length=200)
+    ville = models.CharField(max_length=200)
+    pays = models.CharField(max_length=300)
+    telephone = models.CharField(max_length=300)
+    date_commande = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-date_commande']
 
 
    

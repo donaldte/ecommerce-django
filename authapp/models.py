@@ -10,7 +10,7 @@ class UserRegistrationModel(AbstractUser):
     numero_telephone = models.CharField(_("numero_telephone"), max_length=15)
     biographie = models.TextField()
     peut_vendre = models.BooleanField(default=False)
-    ne_peut_vendre = models.BooleanField(default=False)
+    ne_peut_vendre = models.BooleanField(default=True)
     
    
     

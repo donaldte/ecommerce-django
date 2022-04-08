@@ -5,18 +5,54 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from produits.models import Produit
+from produits.models import Commande, Produit
 from authapp.models import UserRegistrationModel
 from .form import AddPrductForm, UserPrductForm
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
+#home
+def index(request):
+    product_object = Produit.objects.all()
+    item_name = request.GET.get('item')
+    if item_name !='' and item_name is not None:
+        product_object = Produit.objects.filter(name__icontains=item_name)
+    paginator = Paginator(product_object, 4)
+    page = request.GET.get('page')
+    product_object = paginator.get_page(page)
+    return render(request, 'produits/index.html', {'produits': product_object})
 
-#home page 
-def home(request):
-    return render(request, 'produits/index.html')
+#detail
+def detail(request, myid):
+    product_object = Produit.objects.get(id=myid)
+    return render(request, 'produits/detail.html', {'product': product_object})    
 
+def checkout(request):
+    return render(request, 'produits/checkout.html')
 
+def checkout(request, id):
+    produit = Produit.objects.get(id=id)
+    items = produit.name
+    prix = produit.prix
+    user=produit.user
+    if request.method == "POST":
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        ville = request.POST.get('ville')
+        pays = request.POST.get('pays')
+        telephone= request.POST.get('zipcode')
+        com = Commande(vendeur=user, items=items, prix=prix, nom=nom, email=email, address=address, ville=ville, pays=pays, telephone=telephone)
+        com.save()
+        return redirect('/confirmation')
+    return render(request, 'produits/checkout.html', {'item':items, 'price':prix}) 
+
+def confimation(request):
+    info = Commande.objects.all()[:1]
+    for item in info:
+        nom = item.nom
+    return render(request, 'produits/confirmation.html', {'name': nom})            
 
 #statistique des achats
 @staff_member_required
@@ -69,6 +105,7 @@ class EditViewProduct(LoginRequiredMixin,UpdateView):
 	template_name = 'produits/edit_product.html'
 	success_url = reverse_lazy('produits:produtListSeller')
 	success_message = 'Le produit a ete bien modifie'
+
 
 
 class DeleteViewProduct(LoginRequiredMixin,DeleteView):

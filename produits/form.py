@@ -10,4 +10,6 @@ class AddPrductForm(forms.ModelForm):
 class UserPrductForm(forms.ModelForm):
     class Meta:
         model = UserRegistrationModel
-        exclude = ('password', 'permissions', 'groups', )   
+        exclude = ('password', 'permissions', 'groups', )
+
+          

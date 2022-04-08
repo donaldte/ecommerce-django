@@ -25,7 +25,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-warning">
 
     {% include 'navbar.html' %}
 
@@ -40,22 +40,21 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Content de te revoir!</h1>
                                     </div>
                                     <div style="text-align: center;">
                                         <h1>Connexion</h1>
-                                        {% if form.errors %}
-                                        <p>
+                                        {% if error %}
+                                        <p style="color: rgb(242, 20, 20);">
 
-                                            Votre nom d'utilisateur et votre mot de passe ne correspondent pas.Veuillez
+                                           Ouff!! Votre nom d'utilisateur et votre mot de passe ne correspondent pas.
                                             Veuillez réessayer.
                                         </p>
                                         {% else %}
-                                        {{form.errors}}
+                                        
                                         <p>Veuillez utiliser le formulaire suivant pour vous connecter</p>
                                         {% endif %}
                                     </div>
@@ -64,11 +63,11 @@
                                         <div class="form-group">
                                             <input type="text" name= "username" class="form-control form-control-user"
                                                 id="id_email" aria-describedby="emailHelp"
-                                                placeholder="Entrer le nom d'utilisateur ici...">
+                                                placeholder="Entrer le nom d'utilisateur ici..." required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" name="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Entrer le mot de passe">
+                                                id="exampleInputPassword" placeholder="Entrer le mot de passe" required>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">

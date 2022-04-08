@@ -33,6 +33,7 @@ def register(request):
     return render(request, 'authapp/register.html', context=context)
 
 def signIn(request):
+    error = False
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -46,8 +47,9 @@ def signIn(request):
                 return render(request, 'seller/index.html')
             else:
                 return render(request, 'authapp/peux_pas_vendre.html')   
-        
-    return render(request, 'registration/log.html')
+        else:
+            error=True
+    return render(request, 'registration/log.html',{'error':error})
 
 @login_required
 def logoutuser(request):
