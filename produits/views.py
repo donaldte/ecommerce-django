@@ -1,11 +1,11 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from produits.models import Commande, Produit
+from produits.models import Commande, Order, OrderItem, Produit
 from authapp.models import UserRegistrationModel
 from .form import AddPrductForm, UserPrductForm
 from django.contrib import messages
@@ -18,7 +18,7 @@ def index(request):
     item_name = request.GET.get('item')
     if item_name !='' and item_name is not None:
         product_object = Produit.objects.filter(name__icontains=item_name)
-    paginator = Paginator(product_object, 4)
+    paginator = Paginator(product_object, 6)
     page = request.GET.get('page')
     product_object = paginator.get_page(page)
     return render(request, 'produits/index.html', {'produits': product_object})
@@ -85,7 +85,8 @@ class UserEditView(LoginRequiredMixin,UpdateView):
 @login_required 
 def product_seller_list(request):
     userproduit = Produit.objects.filter(user=request.user)
-    return render(request, 'seller/tables.html', {'userproduit':userproduit})        
+    return render(request, 'seller/tables.html', {'userproduit':userproduit})
+        
 
 @login_required
 def addProduct(request):
@@ -117,3 +118,11 @@ class DeleteViewProduct(LoginRequiredMixin,DeleteView):
 	template_name = 'produits/delete_product.html'
 	success_url = reverse_lazy('produits:produtListSeller')
 	success_message = 'le produit a été supprimé avec succès'    
+
+
+def add_to_card(self, pk):
+    item = get_object_or_404(Produit, id=pk)
+    order_item = OrderItem.objects.create(item=item)
+    order = Order.objects.create()
+
+
