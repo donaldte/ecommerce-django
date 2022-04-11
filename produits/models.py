@@ -22,8 +22,7 @@ class Produit(models.Model):
     description = models.TextField(_("Description du produit"))
     prix = models.PositiveIntegerField(_("Prix du produit"))
     date_added = models.DateTimeField(auto_now_add=True)
-    # quantity = models.PositiveIntegerField()
-
+    
     class Meta:
         verbose_name = _("Produit")
         verbose_name_plural = _("Produits")
@@ -55,26 +54,28 @@ class Commande(models.Model):
         ordering = ['-date_commande']
 
 
-# class OrderItem(models.Model):
-#     item = models.ForeignKey(Produit, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.item
+class OrderItem(models.Model):
+    item = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
 
 
-# class Order(models.Model):
-#     item = models.ManyToManyField(OrderItem, related_name='order')
-#     started_date = models.DateTimeField(auto_now_add=True)
-#     ordered_date = models.DateTimeField()
-#     class Meta:
-#         verbose_name = _("Order")
-#         verbose_name_plural = _("Orders")
+    def __str__(self):
+        return self.item
 
-#     def __str__(self):
-#         return self.name
 
-#     def get_absolute_url(self):
-#         return reverse("Order_detail", kwargs={"pk": self.pk})
+class Order(models.Model):
+    item = models.ManyToManyField(OrderItem, related_name='order')
+    started_date = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateTimeField()
+    class Meta:
+        verbose_name = _("Order")
+        verbose_name_plural = _("Orders")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("Order_detail", kwargs={"pk": self.pk})
          
 
 

@@ -120,9 +120,19 @@ class DeleteViewProduct(LoginRequiredMixin,DeleteView):
 	success_message = 'le produit a été supprimé avec succès'    
 
 
-def add_to_card(self, pk):
+def add_to_card(request, pk):
     item = get_object_or_404(Produit, id=pk)
     order_item = OrderItem.objects.create(item=item)
-    order = Order.objects.create()
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.item.filter(item__slug=item.slug).exists():
+            order_item.quantity +=1
+            order_item.save()
+    else:
+        order = OrderItem.objects.create(user=request.user)
+        order.item.add(order_item)        
+        
+
 
 
