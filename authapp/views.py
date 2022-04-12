@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
 from produits.models import Commande
-from .forms import UserRegistration, UserEditForm
+from .forms import UserCustomerForm, UserRegistration, UserEditForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -46,6 +46,21 @@ def register(request):
 
     return render(request, 'authapp/register.html', context=context)
 
+def registerUser(request):
+    if request.method == 'POST':
+        form = UserCustomerForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return redirect('/auth')
+    else:
+        form = UserCustomerForm()
+
+    context = {
+        "form": form
+    }
+
+    return render(request, 'authapp/registeruser.html', context=context)    
+
 def signIn(request):
     error = False
     if request.method == "POST":
@@ -59,8 +74,10 @@ def signIn(request):
                 if 'next' in request.POST:
                     return redirect(request.POST.get('next'))    
                 return redirect('/authdashboard')
+            elif user.ne_peut_vendre:
+                return render(request, 'authapp/peux_pas_vendre.html')
             else:
-                return render(request, 'authapp/peux_pas_vendre.html')   
+                return redirect('/')       
         else:
             error=True
     return render(request, 'registration/log.html',{'error':error})

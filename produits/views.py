@@ -126,7 +126,7 @@ def add_to_card(request, pk):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        if order.item.filter(item__slug=item.slug).exists():
+        if order.item.filter(item__id=item.id).exists():
             order_item.quantity +=1
             order_item.save()
     else:

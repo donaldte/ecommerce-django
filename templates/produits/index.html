@@ -178,7 +178,17 @@
                            <p class="price_text">FCFA <span style="color: #262626;"> {{ produit.prix }}</span></p>
                            <div class="tshirt_img"><img src="{{ produit.image.url }}"></div>
                            <div class="btn_main">
-                              <div class="buy_bt"><a href="checkout/{{produit.id}}">Commander</a></div>
+                              <div class="buy_bt">
+                                 {% if user.is_authenticated  %}
+                                 <a class="btn" style="color: #2A35BC;" href="checkout/{{produit.id}}">Ajouter Panier</a>
+                                {% else %}
+                                <button type="button" class="btn" style="color: #2A35BC;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Ajouter panier
+                               </button>
+                                {% endif %}
+                                
+                              
+                              </div>
                               <div class="seemore_bt"><a href="detail/{{ produit.id }}">Detail</a></div>
                            </div>
                         </div>
@@ -238,7 +248,28 @@
 </div>
 <!-- fashion section end -->
 
+<!-- Button trigger modal -->
 
+ <!-- Modal -->
+ <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="staticBackdropLabel"> Connecter vous ou creer un compte </h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <p class="lead text-xs-center">Il ne faut que quelques secondes pour le faire</p>
+         <div class="lead text-xs-center"><a class="btn btn-info" href="{% url 'authapp:registeruser' %}">Créer un compte</a> ou
+             <a class="btn btn-success" href="{% url 'authapp:login' %}">Connexion</a></div>
+       </div>
+       <div class="modal-footer">
+         
+       </div>
+     </div>
+   </div>
+ </div>
+ 
 
 
 {% endblock content %}
