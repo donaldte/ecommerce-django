@@ -14,6 +14,8 @@ urlpatterns = [
 
     # Clients
     path('detail/<int:myid>/', detail, name="product_detail"),
+    path('add_to_card/<int:pk>/', add_to_card, name='add_to_card'),
+    path('remove_from_card/<int:pk>/', remove_from_card, name='remove_from_card'),
     path('checkout/<int:id>', checkout, name='checkout'),
     path('confirmation', confimation, name='confirmation'),
     #Admin

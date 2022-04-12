@@ -10,6 +10,8 @@ from authapp.models import UserRegistrationModel
 from .form import AddPrductForm, UserPrductForm
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.utils import timezone
+
 
 # Create your views here.
 #home
@@ -122,17 +124,40 @@ class DeleteViewProduct(LoginRequiredMixin,DeleteView):
 
 def add_to_card(request, pk):
     item = get_object_or_404(Produit, id=pk)
-    order_item = OrderItem.objects.create(item=item)
+    order_item, created = OrderItem.objects.get_or_create(item=item, user=request.user, ordered=False)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         if order.item.filter(item__id=item.id).exists():
             order_item.quantity +=1
             order_item.save()
+            messages.info(request, f"{item}-quantité modifié")    
+        else:
+            order.item.add(order_item)
+            messages.success(request, f"produit {item} ajouté")    
     else:
-        order = OrderItem.objects.create(user=request.user)
-        order.item.add(order_item)        
+        ordered_date  = timezone.now()
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        order.item.add(order_item)
+        messages.info(request, f"produit {item} ajouté")
+    return redirect('produits:product_detail', myid=pk)            
         
 
-
+def remove_from_card(request, pk):
+    item = get_object_or_404(Produit, id=pk)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.item.filter(item__id=item.id).exists():
+            order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False)[0]
+            if order_item:
+                order.item.remove(order_item)
+                messages.info(request, f"produit {item} retiré")
+                return redirect('produits:product_detail', myid=pk)
+        else:
+            messages.warning(request, f"Vous n'avez pas le produit {item} dans le parnier")
+            return redirect('produits:product_detail', myid=pk)         
+    else:
+        messages.warning(request, f"Vous n'avez pas le produit {item} dans le parnier")
+        return redirect('produits:product_detail', myid=pk) 
 

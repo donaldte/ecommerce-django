@@ -1,4 +1,5 @@
 
+from tkinter import CASCADE
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _ 
@@ -34,6 +35,15 @@ class Produit(models.Model):
     def get_absolute_url(self):
         return reverse("produits:produit_detail", kwargs={"pk": self.pk})
 
+    def get_add_to_card_url(self):
+        return reverse("produits:add_to_card", kwargs={"pk": self.pk})
+
+    def get_remove_from_card_url(self):
+        return reverse("produits:remove_from_card", kwargs={"pk": self.pk})    
+         
+    
+    
+
 
 class Commande(models.Model):
     vendeur = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
@@ -56,27 +66,32 @@ class Commande(models.Model):
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Produit, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    quantity = models.IntegerField(default=1)
+    user = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    ordered = models.BooleanField(default=False)
 
 
     def __str__(self):
-        return self.item
-
+        return f"{self.quantity} de {self.item}"
 
 class Order(models.Model):
+    user = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
     item = models.ManyToManyField(OrderItem, related_name='order')
     started_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
+    ordered = models.BooleanField(default=False)
+   
     class Meta:
         verbose_name = _("Order")
         verbose_name_plural = _("Orders")
 
     def __str__(self):
-        return self.name
+        return f"{self.user}-{self.started_date}"
 
     def get_absolute_url(self):
-        return reverse("Order_detail", kwargs={"pk": self.pk})
+        return reverse("produits:order_detail", kwargs={"pk": self.pk})
          
+    
 
 
 
