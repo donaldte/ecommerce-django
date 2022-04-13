@@ -15,10 +15,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 def dashboard(request):
     order_list = []
     order = Order.objects.all()
+    print(order)
     for order in order:
         for element in order.item.all():
-            if element.user==request.user:
+            if element.item.user==request.user:
                 order_list.append(element)
+    print(order_list)            
     count =len(order_list)            
   
 
@@ -37,6 +39,7 @@ def register(request):
         form = UserRegistration(request.POST or None)
         if form.is_valid():
             form.save()
+            messages.success(request, "Votre compte a été créé avec succès.")
             return render(request, 'authapp/register_done.html')
     else:
         form = UserRegistration()
@@ -67,7 +70,6 @@ def signIn(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        print(username, password)
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
