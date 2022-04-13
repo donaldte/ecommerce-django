@@ -2,6 +2,7 @@
 site de ecommerce avec django
 
 ![alt text](https://donaldprogrammeur.com/wp-content/uploads/2022/04/ecom1.png)
+![alt text](https://donaldprogrammeur.com/wp-content/uploads/2022/04/ecom4.png)
 ![alt text](https://donaldprogrammeur.com/wp-content/uploads/2022/04/ecom2.png)
 ![alt text](https://donaldprogrammeur.com/wp-content/uploads/2022/04/ecom.png)
 
