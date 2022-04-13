@@ -74,6 +74,11 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} de {self.item}"
 
+    def get_total_item_price(self):
+        return self.quantity * self.item.prix   
+
+       
+
 class Order(models.Model):
     user = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
     item = models.ManyToManyField(OrderItem, related_name='order')
@@ -90,6 +95,12 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse("produits:order_detail", kwargs={"pk": self.pk})
+
+    def get_total(self):
+        total = 0
+        for order_item in self.item.all():
+            total += order_item.get_total_item_price() 
+        return total    
          
     
 

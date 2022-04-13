@@ -90,7 +90,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Commande En attente</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ attente }}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ count }}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -198,9 +198,9 @@
                                             aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">En attente <span
-                                            class="float-right">{{attente}}</span></h4>
+                                            class="float-right">{{count}}</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{attente}}%"
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{count}}%"
                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">Regler<span

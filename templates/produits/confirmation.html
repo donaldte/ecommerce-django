@@ -3,14 +3,27 @@
 
 {% block content %}
 {% include 'produits/bases.html' %}
+<br>
+<br>
 <div class="row">
+    {% if has_order %}
     <div class="col-md-12">
         <ul class="list-group text-center" id="item-list">
-            <h3 class="text-dark text-center bg-warning">Salut Mr/Mrs {{ name }}</h3>
-            <h4 class="text-muted">Merci de nous faire confiance Mr/Mrs {{ name }}. Nous avons recu votre commande vous seriez livrez dans un delai de 1 jour.</h4>
+            <h3 class="text-dark text-center bg-warning">Salut Mr/Mrs {{ request.user.first_name}} {{request.user.last_name}}</h3>
+            <p>Votre cammand a été passé avec succès</p>
+            <h4 class="text-muted">Merci de nous faire confiance Mr/Mrs {{ request.user.first_name}} {{request.user.last_name}}. Nous avons recu votre commande vous seriez livrez dans un delai de 1 jour.</h4>
+        </ul>
+    </div>
+    {% else %}
+    <div class="col-md-12">
+        <ul class="list-group text-center" id="item-list">
+            <h3 class="text-dark text-center bg-warning">Salut Mr/Mrs {{ request.user }}</h3>
+            <h4 class="text-muted">Merci de nous faire confiance Mr/Mrs {{ request.user.first_name}} {{request.user.last_name}}.Maise Vous n'avez pas de commande en cours</h4>
            
         </ul>
     </div>
+
+    {% endif %} 
 </div>
 
 {% endblock  %}

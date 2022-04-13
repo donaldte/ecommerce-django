@@ -1,76 +1,92 @@
-{% extends 'produits/base.html' %}
-
+{% extends "produits/base.html" %}
 
 {% block content %}
 {% include 'produits/bases.html' %}
-<div class="row">
-    <div class="col-md-12">
-        <ul class="list-group" id="item-list">
-            <h3 class="text-center ">Voici votre Commande</h3>
-           
-           
-        </ul>
-    </div>
+<br>
+<br>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-2" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
 </div>
-<div class="row mx-5">
-    
-    <div class="col-md-12">
-        <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              {{item}}
-              <span class="badge badge-primary badge-pill">{{ price }}</span>
-            </li>
-            
-          </ul>
-          <h3 class="text-center ">Veillez remplir le formulaire pour valider votre commande</h3>
-           
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="items", name="items">
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputEmail4">Nom</label>
-                <input type="text" id="nom" name="nom" class="form-control" id="inputEmail4" placeholder="Votre nom ici ">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="inputPassword4">Email</label>
-                <input type="email" id="email" name="email" class="form-control" id="inputPassword4" placeholder="Votre addresse email ici">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputAddress">Address</label>
-              <input type="text" id="address" name="address" class="form-control" id="inputAddress" placeholder="Quel est votre quatier">
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputCity">Ville</label>
-                <input type="text" name="ville" id="ville" class="form-control" id="inputCity" required>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputState">Pays</label>
-                <select id="pays" name="pays" class="form-control" required>
-                  <option>Cameroun</option>
-                  <option>Cote d'Ivoir</option>
-                  <option>Tchad</option>
-                  <option>France</option>
-                  <option selected>Burkina</option>
-                </select>
-              </div>
-              <div class="form-group col-md-2">
-                <label for="inputZip">Numero tel</label>
-                <input name="zipcode" id="zipcode" type="tel" class="form-control" required>
-              </div>
-            </div>
-            <div class="form-group col-md-2">
-              <label for="inputZip">Somme total a payer </label>
-              <input name="total" id="total" type="readonly" value="{{ price }} FCFA" class=" bg-dark text-warning form-control" >
-            </div>
-          </div>
-            <div class="form-group">
-             
-            <button type="submit" class="btn btn-primary">Commander</button>
-          </form>
+{% endfor %}
+{% endif %}
+  <main>
+    <div class="container">
+
+    <div class="table-responsive text-nowrap">
+    <h2>Récapitulatif de la commande</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titre de l'article</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Quantité</th>
+            <th scope="col">Prix ​​total de l'article</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order_item in object.item.all %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ order_item.item.name }}</td>
+            <td>{{ order_item.item.prix }}</td>
+            <td>
+                <a href="{% url 'produits:remove_single_item_from_cart' order_item.item.id %}"><i class="fas fa-minus mr-2"></i></a>
+                {{ order_item.quantity }}
+                <a href="{% url 'produits:add_single_to_card' order_item.item.id %}"><i class="fas fa-plus ml-2"></i></a>
+            </td>
+            <td>
+            {% if order_item.item.discount_price %}
+                FCFA{{ order_item.get_total_discount_item_price }}
+                <span class="badge badge-primary">Économie FCFA{{ order_item.get_amount_saved }}</span>
+            {% else %}
+                FCFA{{ order_item.get_total_item_price }}
+            {% endif %}
+            <a style='color: red;' href="{% url 'produits:remove_from_card' order_item.item.id %}">
+                <i class="fas fa-trash float-right"></i>
+            </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan='5'>Votre panier est vide</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+            <a class='btn btn-primary float-right' href='/'>Continuer vos achats</a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if object.coupon %}
+        <tr>
+            <td colspan="4"><b>Coupon</b></td>
+            <td><b>-${{ object.coupon.amount }}</b></td>
+        </tr>
+        {% endif %}
+        {% if object.get_total %}
+        <tr>
+            <td colspan="4"><b>Total de la commande</b></td>
+            <td><b>{{ object.get_total }} FCFA</b></td>
+        </tr>
+        <tr>
+            <td colspan="5">
+            <a class='btn btn-warning float-right ml-2' href='{% url 'produits:confirmation' %}'>Passer la commande</a>
+            <a class='btn btn-primary float-right' href='/'>Continuer vos achats</a>
+            </td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
     </div>
-</div>
-{% endblock %}
+
+    </div>
+  </main>
+
+{% endblock content %}

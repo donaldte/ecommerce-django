@@ -2,7 +2,7 @@ from django.http import request
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
-from produits.models import Commande
+from produits.models import Commande, Order
 from .forms import UserCustomerForm, UserRegistration, UserEditForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -13,18 +13,19 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @login_required(login_url='/login')
 def dashboard(request):
-    command = Commande.objects.filter(vendeur=request.user)
-    count = command.count()
-    attente = Commande.objects.filter(vendeur=request.user, attente=True).count()            
-    annuler = Commande.objects.filter(vendeur=request.user, annuler=True).count()            
-    regler = Commande.objects.filter(vendeur=request.user, regler=True).count()   
+    order_list = []
+    order = Order.objects.all()
+    for order in order:
+        for element in order.item.all():
+            if element.user==request.user:
+                order_list.append(element)
+    count =len(order_list)            
+  
 
     context = {
         'count':count,
-        'command':command,
-        'attente':attente,
-        'annuler':annuler,
-        'regler': regler,
+        'order_list':order_list,
+        
         "welcome": "Welcome to your dashboard"
     }
 
@@ -73,7 +74,7 @@ def signIn(request):
             if user.peut_vendre:
                 if 'next' in request.POST:
                     return redirect(request.POST.get('next'))    
-                return redirect('/authdashboard')
+                return redirect('/authdashboard/')
             elif user.ne_peut_vendre:
                 return render(request, 'authapp/peux_pas_vendre.html')
             else:

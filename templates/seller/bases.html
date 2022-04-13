@@ -215,7 +215,7 @@
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                {% for com in command %}
+                            
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
@@ -223,11 +223,14 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">{{com.date_commande}}</div>
-                                        <span class="font-weight-bold">{{com.prix}} {{com.nom }}</span>
+                                        <div class="small text-gray-500"></div>
+                                        {% for element in order_list  %}
+                                        <p><span class="font-weight-bold">{{element}}</span><p>
+                                        {% endfor %}
+                                        
                                     </div>
                                 </a>
-                                {% endfor %}
+                            
                                
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
@@ -245,9 +248,9 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">
-                                    Message Center
+                                    Nouvelle commande
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                {% comment %} <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle" src="{% static 'seller/img/undraw_profile_1.svg' %}"
                                             alt="...">
@@ -294,8 +297,8 @@
                                             told me that people say this to all dogs, even if they aren't good...</div>
                                         <div class="small text-gray-500">Chicken the Dog · 2w</div>
                                     </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                                </a> {% endcomment %}
+                                <a class="dropdown-item text-center small text-gray-500" href="#">En savoir plus/a>
                             </div>
                         </li>
 

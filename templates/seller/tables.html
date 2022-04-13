@@ -1,0 +1,62 @@
+{% extends 'seller/bases.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">LISTE PRODUICTS</h1>
+    <p class="mb-4">
+        {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}<a target="_blank" href="/addproduct">Ajouter un produit</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Prix</th>
+                            <th>Date d'ajout</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Prix</th>
+                            <th>Date d'ajout</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for element in userproduit %}
+                        <tr>
+                            <td>{{element.name}}</td>
+                            <td>{{element.description|truncatewords:6}}</td>
+                            <td>${{ element.prix }}</td>
+                            <td>{{ element.date_added }}</td>
+                            <td><a class="btn btn-warning" href="{{ element.get_absolute_url }}">Modifier</a></td>
+                            <td><a class="btn btn-danger" href="supprimer/{{ element.id }}">Supprimer</a></td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

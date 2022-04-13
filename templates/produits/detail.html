@@ -39,7 +39,7 @@
             </div>
             {% if user.is_authenticated %}
             <a href="{{ product.get_add_to_card_url }}"><button class="btn btn-success">Ajouter au panier</button></a>
-            <a href="{{ product.get_remove_from_card_url }}"><button class="btn btn-success">Retirer du panier</button></a>
+            <a href="{{ product.get_remove_from_card_url }}"><button class="btn btn-danger">Retirer du panier</button></a>
             {% else %}
             <button type="button" class="btn" style="color: #2A35BC;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Ajouter panier

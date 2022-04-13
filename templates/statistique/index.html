@@ -48,8 +48,8 @@
                                 <div class="stat-icon dib"><i class="ti-user color-primary border-primary"></i>
                                 </div>
                                 <div class="stat-content dib">
-                                    <div class="stat-text">Nouveaux clients</div>
-                                    <div class="stat-digit">{{ valide }}</div>
+                                    <div class="stat-text">Nombre des utiliateurs</div>
+                                    <div class="stat-digit">{{ total }}</div>
                                 </div>
                             </div>
                         </div>
@@ -60,8 +60,8 @@
                                 <div class="stat-icon dib"><i class="ti-layout-grid2 color-pink border-pink"></i>
                                 </div>
                                 <div class="stat-content dib">
-                                    <div class="stat-text">Commandes</div>
-                                    <div class="stat-digit">{{count}}</div>
+                                    <div class="stat-text">Commandes valide</div>
+                                    <div class="stat-digit">{{valid}}</div>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +71,8 @@
                             <div class="stat-widget-one">
                                 <div class="stat-icon dib"><i class="ti-link color-danger border-danger"></i></div>
                                 <div class="stat-content dib">
-                                    <div class="stat-text">Commandes valide</div>
-                                    <div class="stat-digit">{{valide}}</div>
+                                    <div class="stat-text">Commandes</div>
+                                    <div class="stat-digit">{{order_item}}</div>
                                 </div>
                             </div>
                         </div>
@@ -103,15 +103,15 @@
                                     <table class="table student-data-table m-t-20">
                                         <thead>
                                             <tr>
-                                                <th><label><input type="checkbox" value=""></label>Acheteur</th>
+                                                <th>Acheteur</th>
                                                 <th>Vendeur</th>
                                                 <th>Article</th>
-                                                <th>Prix</th>
+                                                <th>Prix total</th>
                                                 <th>Email</th>
-                                                <th>Addresses</th>
-                                                <th>Telephone</th>
+    
                                                 <th>Ville</th>
-                                                <th>Pays</th>
+                                                <th>Region</th>
+                                                
                                                 
                                                 <th>Date</th>
                                             </tr>
@@ -119,23 +119,34 @@
                                         <tbody>
                                             {% for com in commande  %}
                                             <tr>
-                                                <td>{{com.nom }} </td>
-                                                <td>{{com.vendeur.username }}</td>
-                                                <td>{{ com.items }}</td>
-                                                <td>{{ com.prix }}</td>
+                                                <td style="color:green">{{com.user|capfirst}}</td>
                                                 <td>
-                                                    {{com.email}}
+                                                    {% for order_item in com.item.all %}
+                                                    <ul>
+                                                       <p> <li>{{forloop.counter }}-<span style="color: blue;">{{ order_item.item.user|capfirst }}</span></li></p>
+                                                    </ul>
+                                                    {% endfor %}
                                                 </td>
+                                            
                                                 <td>
-                                                    {{com.address}}
+                                                    {% for order_item in com.item.all %}
+                                                    <ul>
+                                                       <p style="text-align:justify"> <li>{{forloop.counter }}--nom: {{ order_item.item.name}}-- Prix: {{ order_item.item.prix }}Fcfa-- Quantite: {{order_item.quantity }}</li><p>
+                                                    </ul>
+                                                    {% endfor %}
                                                 </td>
-                                                <td>{{ com.telephone }}</td>
+                                                <td>{{ com.get_total }}fcfa</td>
                                                 <td>
-                                                    {{com.ville}}
+                                                    {{com.user.email}}
                                                 </td>
-                                                <td>{{ com.pays }}</td>
 
-                                                <td>{{com.date_commande}}</td>
+                                                
+                                                <td>
+                                                    {{com.user.ville}}
+                                                </td>
+                                                <td>{{ com.user.region }}</td>
+
+                                                <td>{{com.ordered_date }}</td>
                                             </tr>
 
                                             {% endfor %}
@@ -380,12 +391,10 @@
                                         <thead>
                                             <tr>
                                                 <th><label><input type="checkbox" value=""></label>ID</th>
-                                                <th>Vendeur</th>
+                                                <th>Vendeurs</th>
                                                 <th>Article</th>
                                                 <th>Status</th>
-                                                <th>Prix</th>
-                                               
-                                                <th>Telephone</th>
+                                                <th>Prix total </th>
                                                 <th>Date</th>
                                             </tr>
                                         </thead>
@@ -393,19 +402,32 @@
                                             {% for com in commande  %}
                                             <tr>
                                                 <td><label><input type="checkbox" value="">#{{com.id}} </label></td>
-                                                <td>{{com.vendeur.username }}</td>
-                                                <td>{{com.nom}}</td>
-                                                {% if com.attente %}
-                                                    <td> <span class="badge badge-warning">En attente </span></td>
-                                                {% elif com.annuler %}
-                                                    <td> <span class="badge badge-danger">Annuler</span></td>                                         
-                                                {% else %}
-                                                    <td> <span class="badge badge-primary">Regle</span></td>
+                                                <td>
+                                                    {% for order_item in com.item.all %}
+                                                    <ul>
+                                                        <li>{{forloop.counter }}-<span style="color: blue;">{{ order_item.item.user|capfirst }}</span></li>
+                                                    </ul>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% for order_item in com.item.all %}
+                                                    <ul>
+                                                        <li>{{forloop.counter }}--nom: {{ order_item.item.name}}-- Prix: {{ order_item.item.prix }}Fcfa-- Quantite: {{order_item.quantity }}</li>
+                                                    </ul>
+                                                    {% endfor %}
+                                                </td>
+                                                {% if com.ordered %}
+                                                    <td> <span class="badge badge-primary">Commande</span></td>
+                                                   
+                                                    {% else %}
+                                                <td> <span class="badge badge-warning">En attente </span></td>                                        
+                                                
+                                                    
                                                 {% endif %}
-                                                <td>{{ com.prix }}</td>
-                                                <td>{{ com.telephone }}</td>
+                                                <td> {{ com.get_total}}fcfa</td>
                                                
-                                                <td>{{ com.date_commande }}</td>
+                                               
+                                                <td>{{ com.ordered_date }}</td>
                                                
                                             </tr>
 

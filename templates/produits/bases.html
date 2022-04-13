@@ -1,23 +1,68 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-warning">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="/">PHENIX</a>
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Retour <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Vendeurs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Produits</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recherche</button>
-      </form>
+{% load cart_template_tags %}
+<nav class="navbar fix-top navbar-icon-top navbar-expand-lg text-primary navbar-warning ">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect" href="/">
+        <strong class="text-warning">PHENIX</strong>
+        <strong class=""><a href="/">ACCEUIL</a></strong>
+      </a>
+
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+          {% comment %} <li class="nav-item active">
+            <a class="nav-link waves-effect" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="/checkout">
+            Checkout</a>
+          </li> {% endcomment %}
+        </ul>
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons text-danger">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{% url 'produits:order-summary' %}" class="nav-link waves-effect">
+              <span class="badge red z-depth-1 mr-1 text-danger"> {{ request.user|cart_item_count }} </span>
+              <i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Panier </span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'authapp:logout' %}">
+              <span class="clearfix d-none d-sm-inline-block"> Se déconnecter </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <span class="clearfix d-none d-sm-inline-block"><i class="fa fa-user" aria-hidden="true"></i> {{request.user}} </span>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'authapp:login' %}">
+              <span class="clearfix d-none d-sm-inline-block"> Connecter </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'authapp:registeruser'  %}">
+              <span class="clearfix d-none d-sm-inline-block"> Creer un compte </span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
     </div>
   </nav>

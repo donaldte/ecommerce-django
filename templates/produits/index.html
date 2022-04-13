@@ -180,14 +180,13 @@
                            <div class="btn_main">
                               <div class="buy_bt">
                                  {% if user.is_authenticated  %}
-                                 <a class="btn" style="color: #2A35BC;" href="checkout/{{produit.id}}">Ajouter Panier</a>
+                                 <a class="btn" style="color: #2A35BC;" href="detail/{{ produit.id }}">Acheter</a>
                                 {% else %}
                                 <button type="button" class="btn" style="color: #2A35BC;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                Ajouter panier
+                                Acheter
                                </button>
                                 {% endif %}
                                 
-                              
                               </div>
                               <div class="seemore_bt"><a href="detail/{{ produit.id }}">Detail</a></div>
                            </div>

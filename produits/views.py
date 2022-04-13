@@ -1,8 +1,10 @@
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from produits.models import Commande, Order, OrderItem, Produit
@@ -50,19 +52,26 @@ def checkout(request, id):
         return redirect('/confirmation')
     return render(request, 'produits/checkout.html', {'item':items, 'price':prix}) 
 
+login_required
 def confimation(request):
-    info = Commande.objects.all()[:1]
-    for item in info:
-        nom = item.nom
-    return render(request, 'produits/confirmation.html', {'name': nom})            
+    has_order=False
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        order.ordered=True
+        order.save()
+        has_order = True
+
+    return render(request, 'produits/confirmation.html', {'has_order': has_order})            
 
 #statistique des achats
 @staff_member_required
 def statistique(request):
-    command = Commande.objects.all()
-    valide = Commande.objects.filter(regler=True).count()
-    count = Commande.objects.all().count()
-    return render(request, 'statistique/index.html', {'commande':command, 'valid': valide, 'count':count})
+    commande = Order.objects.all()
+    valide = Order.objects.all().count()
+    order_item = OrderItem.objects.all().count()
+    total = UserRegistrationModel.objects.all().count()
+    return render(request, 'statistique/index.html', {'commande':commande, 'valid': valide, 'order_item':order_item, 'total': total})
 
 @staff_member_required
 def product_sellers_list(request):
@@ -115,13 +124,25 @@ class EditViewProduct(LoginRequiredMixin,UpdateView):
 
 
 
+
 class DeleteViewProduct(LoginRequiredMixin,DeleteView):
 	model = Produit
 	template_name = 'produits/delete_product.html'
 	success_url = reverse_lazy('produits:produtListSeller')
 	success_message = 'le produit a été supprimé avec succès'    
 
-
+class OrderSummary(LoginRequiredMixin ,View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object':order
+            }
+        except ObjectDoesNotExist:
+            messages.error(self.request, "Vous n'avez mis aucun produit dans le panier")    
+        return render(self.request, 'produits/checkout.html', context)
+    
+@login_required
 def add_to_card(request, pk):
     item = get_object_or_404(Produit, id=pk)
     order_item, created = OrderItem.objects.get_or_create(item=item, user=request.user, ordered=False)
@@ -131,7 +152,7 @@ def add_to_card(request, pk):
         if order.item.filter(item__id=item.id).exists():
             order_item.quantity +=1
             order_item.save()
-            messages.info(request, f"{item}-quantité modifié")    
+            messages.info(request, f"{item}-quantité augmenté")    
         else:
             order.item.add(order_item)
             messages.success(request, f"produit {item} ajouté")    
@@ -141,7 +162,59 @@ def add_to_card(request, pk):
         order.item.add(order_item)
         messages.info(request, f"produit {item} ajouté")
     return redirect('produits:product_detail', myid=pk)            
-        
+
+@login_required
+def add_single_to_card(request, pk):
+    item = get_object_or_404(Produit, id=pk)
+    order_item, created = OrderItem.objects.get_or_create(item=item, user=request.user, ordered=False)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.item.filter(item__id=item.id).exists():
+            order_item.quantity +=1
+            order_item.save()
+            messages.info(request, f"{item}-quantité augmenté")  
+            return redirect("produits:order-summary")  
+        else:
+            order.item.add(order_item)
+            messages.success(request, f"produit {item} ajouté")    
+    else:
+        ordered_date  = timezone.now()
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        order.item.add(order_item)
+        messages.info(request, f"produit {item} ajouté")
+    return redirect("produits:product", id=pk)      
+
+@login_required
+def remove_single_item_from_cart(request, pk):
+    item = get_object_or_404(Produit, id=pk)
+    order_qs = Order.objects.filter(
+        user=request.user,
+        ordered=False
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        # check if the order item is in the order
+        if order.item.filter(item__id=item.pk).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False
+            )[0]
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+            else:
+                order.item.remove(order_item)
+            messages.info(request, "La quantité de cet article a été mise à jour.")
+            return redirect("produits:order-summary")
+        else:
+            messages.info(request, "Cet article n'était pas dans votre panier")
+            return redirect("produit:product", id=pk)
+    else:
+        messages.info(request, "Vous n'avez pas de commande active")
+        return redirect("produits:product", id=pk)
+
 
 def remove_from_card(request, pk):
     item = get_object_or_404(Produit, id=pk)
