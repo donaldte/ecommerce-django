@@ -42,26 +42,6 @@ class Produit(models.Model):
         return reverse("produits:remove_from_card", kwargs={"pk": self.pk})    
          
     
-    
-
-
-class Commande(models.Model):
-    vendeur = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
-    items = models.CharField(max_length=300)
-    prix = models.CharField(max_length=200)
-    nom = models.CharField(max_length=150)
-    email = models.EmailField()
-    address = models.CharField(max_length=200)
-    ville = models.CharField(max_length=200)
-    pays = models.CharField(max_length=300)
-    telephone = models.CharField(max_length=300)
-    date_commande = models.DateTimeField(auto_now=True)
-    attente = models.BooleanField(_('En attente'), default=True)
-    annuler = models.BooleanField(_('Annuler'), default=False)
-    regler = models.BooleanField(_('Regler'), default=False)
-
-    class Meta:
-        ordering = ['-date_commande']
 
 
 class OrderItem(models.Model):

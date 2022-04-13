@@ -2,7 +2,7 @@ from django.http import request
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
-from produits.models import Commande, Order
+from produits.models import  Order
 from .forms import UserCustomerForm, UserRegistration, UserEditForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages

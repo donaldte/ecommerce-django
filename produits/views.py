@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from produits.models import Commande, Order, OrderItem, Produit
+from produits.models import  Order, OrderItem, Produit
 from authapp.models import UserRegistrationModel
 from .form import AddPrductForm, UserPrductForm
 from django.contrib import messages
@@ -34,23 +34,6 @@ def detail(request, myid):
 
 def checkout(request):
     return render(request, 'produits/checkout.html')
-
-def checkout(request, id):
-    produit = Produit.objects.get(id=id)
-    items = produit.name
-    prix = produit.prix
-    user=produit.user
-    if request.method == "POST":
-        nom = request.POST.get('nom')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        ville = request.POST.get('ville')
-        pays = request.POST.get('pays')
-        telephone= request.POST.get('zipcode')
-        com = Commande(vendeur=user, items=items, prix=prix, nom=nom, email=email, address=address, ville=ville, pays=pays, telephone=telephone)
-        com.save()
-        return redirect('/confirmation')
-    return render(request, 'produits/checkout.html', {'item':items, 'price':prix}) 
 
 login_required
 def confimation(request):
