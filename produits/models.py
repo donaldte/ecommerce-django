@@ -23,6 +23,7 @@ class Produit(models.Model):
     description = models.TextField(_("Description du produit"))
     prix = models.PositiveIntegerField(_("Prix du produit"))
     date_added = models.DateTimeField(auto_now_add=True)
+    mode_payement = models.CharField(_('Mode De Payement'), max_length=100, default="Orange Money")
     
     class Meta:
         verbose_name = _("Produit")
@@ -65,6 +66,7 @@ class Order(models.Model):
     started_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    frais_de_livraison = models.IntegerField(_('Frais De Livraison'), default=500)
    
     class Meta:
         verbose_name = _("Order")
@@ -76,10 +78,14 @@ class Order(models.Model):
     def get_absolute_url(self):
         return reverse("produits:order_detail", kwargs={"pk": self.pk})
 
+    def get_frais(self):
+        return self.frais_de_livraison    
+
     def get_total(self):
         total = 0
         for order_item in self.item.all():
-            total += order_item.get_total_item_price() 
+            total += order_item.get_total_item_price()
+        total += self.frais_de_livraison     
         return total    
          
     

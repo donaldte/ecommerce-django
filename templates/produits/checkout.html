@@ -42,12 +42,8 @@
                 <a href="{% url 'produits:add_single_to_card' order_item.item.id %}"><i class="fas fa-plus ml-2"></i></a>
             </td>
             <td>
-            {% if order_item.item.discount_price %}
-                FCFA{{ order_item.get_total_discount_item_price }}
-                <span class="badge badge-primary">Économie FCFA{{ order_item.get_amount_saved }}</span>
-            {% else %}
-                FCFA{{ order_item.get_total_item_price }}
-            {% endif %}
+               {{ order_item.get_total_item_price }} FCFA
+            
             <a style='color: red;' href="{% url 'produits:remove_from_card' order_item.item.id %}">
                 <i class="fas fa-trash float-right"></i>
             </a>
@@ -63,16 +59,17 @@
             </td>
         </tr>
         {% endfor %}
-        {% if object.coupon %}
+       
         <tr>
-            <td colspan="4"><b>Coupon</b></td>
-            <td><b>-${{ object.coupon.amount }}</b></td>
+            <td colspan="4"><b>Frais De Livraison</b></td>
+            <td><b>+{{ object.get_frais}} FCFA</b></td>
         </tr>
-        {% endif %}
+    
         {% if object.get_total %}
         <tr>
             <td colspan="4"><b>Total de la commande</b></td>
             <td><b>{{ object.get_total }} FCFA</b></td>
+           
         </tr>
         <tr>
             <td colspan="5">

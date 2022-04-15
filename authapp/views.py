@@ -11,11 +11,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
+#dashbord du vendeur
 @login_required(login_url='/login')
 def dashboard(request):
     order_list = []
     order = Order.objects.all()
-    print(order)
     for order in order:
         for element in order.item.all():
             if element.item.user==request.user:
@@ -76,7 +76,7 @@ def signIn(request):
             if user.peut_vendre:
                 if 'next' in request.POST:
                     return redirect(request.POST.get('next'))    
-                return redirect('/authdashboard/')
+                return redirect('/')
             elif user.ne_peut_vendre:
                 return render(request, 'authapp/peux_pas_vendre.html')
             else:
