@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from produits.models import  Order, OrderItem, Produit
+from produits.models import  Categorie, Order, OrderItem, Produit
 from authapp.models import UserRegistrationModel
 from .form import AddPrductForm, UserPrductForm
 from django.contrib import messages
@@ -19,13 +19,14 @@ from django.utils import timezone
 #home
 def index(request):
     product_object = Produit.objects.all()
+    categories = Categorie.objects.all()
     item_name = request.GET.get('item')
     if item_name !='' and item_name is not None:
         product_object = Produit.objects.filter(name__icontains=item_name)
     paginator = Paginator(product_object, 6)
     page = request.GET.get('page')
     product_object = paginator.get_page(page)
-    return render(request, 'produits/index.html', {'produits': product_object})
+    return render(request, 'produits/index.html', {'produits': product_object, 'categories':categories})
 
 #detail
 def detail(request, myid):
@@ -90,7 +91,7 @@ def addProduct(request):
             product = form.save(commit=False)
             product.user = request.user
             product.save()
-            messages.success(request, "The book was added successfully.")
+            messages.success(request, "The product has been added successfully.")
             return redirect('/list')
         else:
             form = AddPrductForm(request.POST, request.FILES)
@@ -124,6 +125,15 @@ class OrderSummary(LoginRequiredMixin ,View):
         except ObjectDoesNotExist:
             messages.error(self.request, "Vous n'avez mis aucun produit dans le panier")    
         return render(self.request, 'produits/checkout.html', context)
+
+@login_required
+def all_categories(request, pk):
+    categories = Categorie.objects.all(id=pk)
+    produits = Produit.objects.get(categorie=categories)
+    context = {
+        'product_object':produits
+    }
+    return render(request, 'produits/index.html', context)
     
 @login_required
 def add_to_card(request, pk):

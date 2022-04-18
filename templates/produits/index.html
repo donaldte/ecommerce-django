@@ -59,7 +59,9 @@
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories
                </button>
                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Models</a>
+                  {% for cat in categories  %}
+                  <a class="dropdown-item" href="categories/{{cat.id}}/">{{ cat.name }}</a>
+                  {% endfor %}
 
                </div>
             </div>
