@@ -126,12 +126,12 @@ class OrderSummary(LoginRequiredMixin ,View):
             messages.error(self.request, "Vous n'avez mis aucun produit dans le panier")    
         return render(self.request, 'produits/checkout.html', context)
 
-@login_required
+
 def all_categories(request, pk):
-    categories = Categorie.objects.all(id=pk)
-    produits = Produit.objects.get(categorie=categories)
+    categories = Categorie.objects.get(id=pk)
+    produits = Produit.objects.filter(categorie=categories)
     context = {
-        'product_object':produits
+        'produits':produits
     }
     return render(request, 'produits/index.html', context)
     
