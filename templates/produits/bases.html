@@ -1,68 +1,43 @@
 {% load cart_template_tags %}
-<nav class="navbar fix-top navbar-icon-top navbar-expand-lg text-primary navbar-warning ">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">PHENIX-ACCUEIL</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-      <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="/">
-        <strong class="text-warning">PHENIX</strong>
-        <strong class=""><a href="/">ACCEUIL</a></strong>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+  <ul class="navbar-nav nav-flex-icons text-danger">
+    {% if request.user.is_authenticated %}
+    <li class="nav-item">
+      <a href="{% url 'produits:order-summary' %}" class="nav-link waves-effect">
+        <span class="badge red z-depth-1 mr-1 text-danger"> {{ request.user|cart_item_count }} </span>
+        <i class="fas fa-shopping-cart"></i>
+        <span class="clearfix d-none d-sm-inline-block"> Panier </span>
       </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link waves-effect" href="{% url 'authapp:logout' %}">
+        <span class="clearfix d-none d-sm-inline-block"> Se déconnecter </span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <span class="clearfix d-none d-sm-inline-block"><i class="fa fa-user" aria-hidden="true"></i> {{request.user}} </span>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link waves-effect" href="{% url 'authapp:login' %}">
+        <span class="clearfix d-none d-sm-inline-block"> Connecter </span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link waves-effect" href="{% url 'authapp:registeruser'  %}">
+        <span class="clearfix d-none d-sm-inline-block"> Creer un compte </span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+    
+</nav>
 
-      <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Links -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <!-- Left -->
-        <ul class="navbar-nav mr-auto">
-          {% comment %} <li class="nav-item active">
-            <a class="nav-link waves-effect" href="/">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="/checkout">
-            Checkout</a>
-          </li> {% endcomment %}
-        </ul>
-
-        <!-- Right -->
-        <ul class="navbar-nav nav-flex-icons text-danger">
-          {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a href="{% url 'produits:order-summary' %}" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1 text-danger"> {{ request.user|cart_item_count }} </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Panier </span>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'authapp:logout' %}">
-              <span class="clearfix d-none d-sm-inline-block"> Se déconnecter </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <span class="clearfix d-none d-sm-inline-block"><i class="fa fa-user" aria-hidden="true"></i> {{request.user}} </span>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'authapp:login' %}">
-              <span class="clearfix d-none d-sm-inline-block"> Connecter </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'authapp:registeruser'  %}">
-              <span class="clearfix d-none d-sm-inline-block"> Creer un compte </span>
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
-    </div>
-  </nav>
