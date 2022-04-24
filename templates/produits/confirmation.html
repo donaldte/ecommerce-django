@@ -9,7 +9,7 @@
     {% if has_order %}
     <div class="col-md-12">
         <ul class="list-group text-center" id="item-list">
-            <h3 class="text-dark text-center bg-warning">Salut Mr/Mrs {{ request.user.first_name}} {{request.user.last_name}}</h3>
+            <h3 class="text-dark text-center bg-warning">Salut Mr/Mrs {{ request.user.username}}</h3>
             <p>Votre cammand a été passé avec succès</p>
             <h4 class="text-muted">Merci de nous faire confiance Mr/Mrs {{ request.user.first_name}} {{request.user.last_name}}. Nous avons recu votre commande vous seriez livrez dans un delai de 1 jour.</h4>
         </ul>

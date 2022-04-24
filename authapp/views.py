@@ -10,7 +10,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 
 # Create your views here.
-
 #dashbord du vendeur
 @login_required(login_url='/login')
 def dashboard(request):
@@ -19,8 +18,7 @@ def dashboard(request):
     for order in order:
         for element in order.item.all():
             if element.item.user==request.user:
-                order_list.append(element)
-    print(order_list)            
+                order_list.append(element)           
     count =len(order_list)            
   
 

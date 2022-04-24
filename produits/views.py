@@ -51,7 +51,7 @@ def confimation(request):
 #statistique des achats
 @staff_member_required
 def statistique(request):
-    commande = Order.objects.all()
+    commande = Order.objects.all().order_by('-ordered_date')
     valide = Order.objects.all().count()
     order_item = OrderItem.objects.all().count()
     total = UserRegistrationModel.objects.all().count()
